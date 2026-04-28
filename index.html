@@ -6,10 +6,11 @@
   <title>Moje CV</title>
   <style>
     :root {
-      --bg: #000000;
-      --text: #f5f5f7;
-      --muted: #86868b;
-      --accent: #2997ff;
+      --bg: #020617;
+      --bg-gradient: radial-gradient(1000px 600px at 80% -10%, rgba(41,151,255,0.25), transparent);
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
     }
 
     * { box-sizing: border-box; }
@@ -17,20 +18,24 @@
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
+      background: var(--bg-gradient), var(--bg);
       color: var(--text);
       line-height: 1.4;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
     .container {
       max-width: 900px;
       margin: 0 auto;
-      padding: 40px 20px 80px;
+      padding: 60px 20px 100px;
     }
 
     header {
-      margin-bottom: 120px;
+      margin-bottom: 140px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s ease forwards;
     }
 
     h1 {
@@ -59,7 +64,12 @@
       height: 120px;
       border-radius: 50%;
       overflow: hidden;
-      border: 1px solid #222;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: transform 0.4s ease;
+    }
+
+    .avatar:hover {
+      transform: scale(1.05);
     }
 
     .avatar img {
@@ -69,11 +79,19 @@
     }
 
     section {
-      margin-bottom: 100px;
+      margin-bottom: 120px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     h2 {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--muted);
@@ -81,7 +99,7 @@
     }
 
     .big-text {
-      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-size: clamp(1.6rem, 3vw, 2.3rem);
       font-weight: 500;
       max-width: 700px;
     }
@@ -89,13 +107,19 @@
     .list {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 24px;
     }
 
     .item {
       display: flex;
       justify-content: space-between;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
+      transition: transform 0.3s ease;
+    }
+
+    .item:hover {
+      transform: translateX(6px);
+      color: var(--accent);
     }
 
     .item span {
@@ -113,11 +137,17 @@
     .skill {
       font-size: 0.9rem;
       color: var(--muted);
+      transition: color 0.2s ease;
+    }
+
+    .skill:hover {
+      color: var(--accent);
     }
 
     a {
       color: var(--text);
       text-decoration: none;
+      transition: color 0.2s ease;
     }
 
     a:hover {
@@ -128,14 +158,19 @@
       text-align: center;
       font-size: 0.8rem;
       color: var(--muted);
-      margin-top: 120px;
+      margin-top: 140px;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @media (max-width: 600px) {
-      .avatar {
-        width: 90px;
-        height: 90px;
-      }
+      h1 { font-size: 2.4rem; }
+      .avatar { width: 90px; height: 90px; }
     }
   </style>
 </head>
@@ -143,7 +178,7 @@
   <div class="container">
 
     <header>
-      <h1>Vojtěch Michal</h1>
+      <h1>Vojtech Michal</h1>
       <div class="hero-subtitle">
         Tvořím rychlé, čisté a moderní webové aplikace se zaměřením na detail.
       </div>
@@ -202,5 +237,20 @@
     </footer>
 
   </div>
+
+  <script>
+    const sections = document.querySelectorAll("section");
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.2 });
+
+    sections.forEach(section => observer.observe(section));
+  </script>
+
 </body>
 </html>
